@@ -4,6 +4,10 @@ var cookieParser = require('cookie-parser')
 var session = require('express-session')
 
 
+// requires
+// middlewares
+// routes
+
 const app = express();
 var cors = require('cors');
 
@@ -23,12 +27,7 @@ const corsOpts = {
 app.use(cors(corsOpts));
 // app.use(cors(corsOptions))
 app.options('*', cors())
-app.get('/getData', (req, res) => {
-    res.json({
-        "statusCode": 200,
-        "statusMessage": "SUCCESS"
-    })
-})
+
 
 
 // middlewares // app use
@@ -53,11 +52,19 @@ MongoClient.connect(myurl, (err, client) => {
 
 });
 
+app.get('/getData', (req, res) => {
+    console.log(req.session.username)
+    res.json({
+        "statusCode": 200,
+        "statusMessage": "SUCCESS",
+        "session":req.session
+    })
+})
+
 //LOGIN API
 app.post("/login", (req, res) => {
     const name = req.body.name;
     const password = req.body.password;
-    console.log(req.body);
     if(!req.body.name || req.body.name==""){
         return res.send({
             "statusCode": 200,
@@ -67,7 +74,7 @@ app.post("/login", (req, res) => {
     }
     db.collection("employees").find({ "name": name, "password": password }).toArray(function (err, result) {
         if (err) throw err;
-        // console.log(JSON.stringify(result));
+        console.log(JSON.stringify(result));
 
         if (result.length) {
             req.session.username = name;
