@@ -1,0 +1,16 @@
+<h1 class="empty" *ngIf="getbin.length==0">Your Bin is Empty</h1>
+<div class="notes-section" *ngIf="getbin.length!=0">
+    <h2>Notes in Trash are deleted after 7 days.</h2> 
+        <mat-card *ngFor="let t of getbin">
+            <mat-card-title> {{t?.title}}</mat-card-title>
+            <mat-card-content> {{t?.text}}</mat-card-content>
+            <mat-card-content>
+                <button (click)="DelForver(t)"> 
+                    <mat-icon>delete_forever</mat-icon>
+                </button>
+                <button (click)="Restore(t)"> 
+                    <mat-icon>restore_from_trash</mat-icon>
+                </button>
+            </mat-card-content>
+        </mat-card>
+    </div>

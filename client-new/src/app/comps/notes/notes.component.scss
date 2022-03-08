@@ -1,0 +1,16 @@
+mat-card {
+    width: 250px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 1rem;
+    display: inline-block;
+    margin: 1rem;
+}
+button {
+    all: unset;
+    // font-size: 10px;
+}
+mat-icon{
+    font-size: 18px;
+    cursor: pointer;
+}

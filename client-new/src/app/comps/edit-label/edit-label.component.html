@@ -1,0 +1,19 @@
+
+<div>
+    <form #dialogForm="ngForm">
+     <p>Edit Labels</p>
+     <input type="text" placeholder="Create new label" name="edit" ngModel >
+     <mat-icon (click)="AddDialog(dialogForm)">check</mat-icon>
+    </form>
+    <hr>
+    <div *ngFor="let arr of localArray"> 
+        <!-- in condition if arr exist then card will show  -->
+        <div *ngIf="arr">
+        <mat-icon (click)="deleteThis(arr)">delete</mat-icon>
+        <input type="text" [disabled]="editlab" value="{{arr}}" >
+       <mat-icon (click)="editLabel()">edit</mat-icon>
+       </div>
+    </div>
+    <button type="button">Done</button>
+ </div>
+ 
