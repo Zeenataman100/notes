@@ -60,16 +60,7 @@ app.use(session({
     saveUninitialized : true
 }));
 
-// database connection
-// DB related codes
-const MongoClient = require('mongodb').MongoClient
-const myurl = 'mongodb://localhost:27017';
-var db;
-MongoClient.connect(myurl, (err, client) => {
-    if (err) return console.log(err)
-    db = client.db('zeenatdb')
 
-});
 
 var loginRoutes = require('./Routes/UserAuthenticationServices')
 var regsiterRoutes = require('./Routes/UserAuthenticationServices')
