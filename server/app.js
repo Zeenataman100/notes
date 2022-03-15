@@ -61,11 +61,41 @@ app.use(session({
 }));
 
 
+// database connection
+// DB related codes
+const MongoClient = require('mongodb').MongoClient
+const myurl = 'mongodb://localhost:27017';
+var db;
+MongoClient.connect(myurl, (err, client) => {
+    if (err) return console.log(err)
+    db = client.db('zeenatdb')
+
+});
+
+function checkLogin(req,res,next){
+    const username = req.session.username
+
+    if(!username){
+        return res.send({
+            status:"UAUTHORIZE",
+            error:"User not login"
+        })
+    }
+
+}
+
+
 
 var loginRoutes = require('./Routes/UserAuthenticationServices')
 var regsiterRoutes = require('./Routes/UserAuthenticationServices')
 var forgetRoutes = require('./Routes/UserAuthenticationServices')
-var db = require('./Utilities/database')
+
+app.use(loginRoutes)
+app.use(regsiterRoutes)
+app.use(forgetRoutes)
+
+
+
 
 
 app.listen(3001, (req, res) => {
