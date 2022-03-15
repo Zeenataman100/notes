@@ -65,6 +65,7 @@ app.use(session({
 var loginRoutes = require('./Routes/UserAuthenticationServices')
 var regsiterRoutes = require('./Routes/UserAuthenticationServices')
 var forgetRoutes = require('./Routes/UserAuthenticationServices')
+var db = require('./Utilities/database')
 
 
 app.listen(3001, (req, res) => {
