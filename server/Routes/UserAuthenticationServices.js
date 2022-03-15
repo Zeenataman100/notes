@@ -1,4 +1,3 @@
-const Router= require('express');
 const express = require('express')
 const router = express.Router()
 
@@ -36,7 +35,6 @@ router.post("/login", (req, res) => {
                 status: "Success",
                 data: "User is authenticated, Login success "
             })
-            // return res.redirect('/notes');
         }
         else {
             res.send({
@@ -124,5 +122,10 @@ router.post('/forgot', (req, res) => {
     })
 
 })
-
-module.exports = Router;
+//LOGOUT
+router.get('/logout',(req,res)=>
+{
+req.session.destroy()
+return res.status(200).send();
+})
+module.exports = router;

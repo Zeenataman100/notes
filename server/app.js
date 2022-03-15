@@ -54,33 +54,21 @@ app.use(cookieParser())
 // Here ‘secret‘ is used for cookie handling etc but we have to put some secret for managing Session in Express.
 
 app.use(session({
-    name : 'app.sid',
-    secret : "1234567890QWERTY",
-    resave : true,
-    saveUninitialized : true
+    name: 'app.sid',
+    secret: "1234567890QWERTY",
+    resave: true,
+    saveUninitialized: true
 }));
-
-
-// database connection
-// DB related codes
-const MongoClient = require('mongodb').MongoClient
-const myurl = 'mongodb://localhost:27017';
-var db;
-MongoClient.connect(myurl, (err, client) => {
-    if (err) return console.log(err)
-    db = client.db('zeenatdb')
-
-});
-
-function checkLogin(req,res,next){
+function checkLogin(req, res, next) {
     const username = req.session.username
 
-    if(!username){
+    if (!username) {
         return res.send({
-            status:"UAUTHORIZE",
-            error:"User not login"
+            status: "UAUTHORIZE",
+            error: "User not login"
         })
     }
+    next()
 
 }
 
@@ -89,7 +77,8 @@ function checkLogin(req,res,next){
 var loginRoutes = require('./Routes/UserAuthenticationServices')
 var regsiterRoutes = require('./Routes/UserAuthenticationServices')
 var forgetRoutes = require('./Routes/UserAuthenticationServices')
-
+var notesService = require('./Routes/NotesServices');
+app.use(notesService)
 app.use(loginRoutes)
 app.use(regsiterRoutes)
 app.use(forgetRoutes)

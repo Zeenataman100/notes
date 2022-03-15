@@ -1,10 +1,33 @@
 
-const Router = require('express')
 const express = require('express')
 const router = express.Router()
 
+
+// DB related codes
+const MongoClient = require('mongodb').MongoClient
+const myurl = 'mongodb://localhost:27017';
+var db;
+MongoClient.connect(myurl, (err, client) => {
+    if (err) return console.log(err)
+    db = client.db('zeenatdb')
+
+});
+
+function checkLogin(req, res, next) {
+    const username = req.session.username
+
+    if (!username) {
+        return res.send({
+            status: "UAUTHORIZE",
+            error: "User not login"
+        })
+    }
+    next()
+
+}
+
 //Now using ‘request‘ variable you can assign session to any variable
-router.get('/getData', (req, res) => {
+router.get('/getData',checkLogin, (req, res) => {
     console.log(req.session.username)
     res.json({
         "statusCode": 200,
@@ -16,7 +39,7 @@ router.get('/getData', (req, res) => {
 
 
 //GET NOTES API
-router.get("/notes", (req, res) => {
+router.get("/notes",checkLogin, (req, res) => {
     const username = req.session.username
     console.log(req.session.username);
     db.collection("notes").find({ "createdBy": username }).toArray(function (err, result) {
@@ -76,4 +99,4 @@ router.post('/notes', (req, res) => {
     })
 
 })
-module.exports = Router
+module.exports = router
