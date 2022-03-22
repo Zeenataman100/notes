@@ -40,6 +40,7 @@ const corsOpts = {
     methods: [
         'GET',
         'POST',
+        'PUT',
     ]
 };
 //Calling use(cors()) will enable the express server to respond to preflight requests.
@@ -72,16 +73,28 @@ function checkLogin(req, res, next) {
 
 }
 
+function checkCategory(req, res, next) {
+    const category = req.session.category
 
+    if (!category) {
+        return res.send({
+            status: "OK",
+            error: "Category not there"
+        })
+    }
+    next()
 
+}
 var loginRoutes = require('./Routes/UserAuthenticationServices')
 var regsiterRoutes = require('./Routes/UserAuthenticationServices')
 var forgetRoutes = require('./Routes/UserAuthenticationServices')
 var notesService = require('./Routes/NotesServices');
+var remainderService = require('./Routes/NotesServices');
 app.use(notesService)
 app.use(loginRoutes)
 app.use(regsiterRoutes)
 app.use(forgetRoutes)
+app.use(remainderService)
 
 
 

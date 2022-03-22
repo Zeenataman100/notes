@@ -25,6 +25,23 @@ function checkLogin(req, res, next) {
     next()
 
 }
+function checkCategory(req, res, next) {
+    const category = req.category
+
+    if (category) {
+        return res.send({
+            status: "200",
+            category: "Category are here"
+        })
+    }else{
+        return res.send({
+            status: "404",
+            error: "Category not found"
+        })
+    }
+    next()
+
+}
 
 //Now using ‘request‘ variable you can assign session to any variable
 router.get('/getData',checkLogin, (req, res) => {
@@ -39,10 +56,11 @@ router.get('/getData',checkLogin, (req, res) => {
 
 
 //GET NOTES API
-router.get("/notes",checkLogin, (req, res) => {
+router.get("/notes",checkLogin,(req, res) => {
     const username = req.session.username
+    const notes = req.session.category
     console.log(req.session.username);
-    db.collection("notes").find({ "createdBy": username }).toArray(function (err, result) {
+    db.collection("notes").find({ "createdBy": username, "category":notes }).toArray(function (err, result) {
         if (err) {
             return res.send({
                 status: "Error: some issue with db connection",
@@ -99,4 +117,32 @@ router.post('/notes', (req, res) => {
     })
 
 })
+
+//REMAINDER API
+
+
+
+router.put("/remainder",(req, res) => {
+    const username = req.session.username
+    console.log(req.session.username);
+    const category_id = { noteid:parseInt(req.params.noteid)}
+    db.collection("remainder").updateOne({category_id},{"createdBy": username},{category:"remainder"})(function (err, result) {
+        if (err) {
+            return res.send({
+                status: "Error: some issue with db connection",
+                data: err
+            })
+
+        };
+
+        console.log(result);
+        res.send({
+            status: "Remainder Notes Successfully saved",
+            data: result
+        })
+
+    })
+})
+
+
 module.exports = router

@@ -123,9 +123,15 @@ router.post('/forgot', (req, res) => {
 
 })
 //LOGOUT
-router.get('/logout',(req,res)=>
-{
-req.session.destroy()
-return res.status(200).send();
+router.get('/logout', (req, res) => {
+    console.log(req.session, "current session delete")
+    delete req.session.username ;
+    return res.send(
+        {
+            status: 200,
+            data: "logout successfully",
+        }
+
+    );
 })
 module.exports = router;
